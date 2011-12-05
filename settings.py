@@ -71,8 +71,8 @@ INSTALLED_APPS = [
     "rapidsms.contrib.locations",
     "rapidsms.contrib.messagelog",
     "rapidsms.contrib.messaging",
-    "rapidsms.contrib.registration",
-    "rapidsms.contrib.scheduler",
+    # "rapidsms.contrib.registration",
+    # "rapidsms.contrib.scheduler",
     "rapidsms.contrib.echo",
 
     # openhamilton.ca apps.
@@ -85,10 +85,10 @@ INSTALLED_APPS = [
 # to add it here, also, to expose it in the rapidsms ui.
 RAPIDSMS_TABS = [
     ("rapidsms.contrib.messagelog.views.message_log",       "Message Log"),
-    ("rapidsms.contrib.registration.views.registration",    "Registration"),
+    # ("rapidsms.contrib.registration.views.registration",    "Registration"),
     ("rapidsms.contrib.messaging.views.messaging",          "Messaging"),
     ("rapidsms.contrib.locations.views.locations",          "Map"),
-    ("rapidsms.contrib.scheduler.views.index",              "Event Scheduler"),
+    # ("rapidsms.contrib.scheduler.views.index",              "Event Scheduler"),
     ("rapidsms.contrib.httptester.views.generate_identity", "Message Tester"),
 ]
 

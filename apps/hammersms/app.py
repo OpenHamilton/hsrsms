@@ -18,15 +18,22 @@ class App(AppBase):
    # HSR Next Rte 1A 10 min, Rte 2 15 min, Rte 4 17 min.
    # Use HSR 1234 1A for more King.  Use 1234 2 for more Barton
    def handle(self, message):
+      HELP_MSG = 'Usage: \'HSR stopnumber\'\n Ex. \'HSR 3001\'\nor \'HSR 3001 5C\''
+
       userid = 'HSR'
       msg = message.raw_text.strip().upper();
+
+      # implement help functionality here 
+      if(msg == 'HELP' or msg == 'HELP.'):
+         message.respond(HELP_MSG)
+         return
       
-      #parse sms into components.  If nothing is matched than the SMS is invalid
-      #match = re.match("^(?:" + userid + ")[ -_]*(?P<stop>\d{4})(?:[ \-_]+(?P<bus>[0-9A-Z]{1,4}))?$",msg,0) #Regex for 4 digits, use this with actual HSR data
+      # parse sms into components.  If nothing is matched than the SMS is invalid
+      # match = re.match("^(?:" + userid + ")[ -_]*(?P<stop>\d{4})(?:[ \-_]+(?P<bus>[0-9A-Z]{1,4}))?$",msg,0) #Regex for 4 digits, use this with actual HSR data
       match = re.match("^(?:" + userid + ")[ \-_]*(?P<stop>[^ ]+)(?:[ \-_]+(?P<bus>[0-9A-Z]{1,4}))?$",msg,0)        
-        
+      
       if(match == None):
-          message.respond('Invalid request')
+          message.respond('Invalid request. Text \'help\' for more options.')
           return 
 
       stop = match.group('stop')
