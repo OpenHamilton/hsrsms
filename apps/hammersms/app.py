@@ -1,7 +1,7 @@
 import re
 from datetime import time
 from rapidsms.apps.base import AppBase
-from BusSMS.models import StopTime, Trip, Route, Stop
+from hammersms.models import StopTime, Trip, Route, Stop
 
 class App(AppBase):
 
