@@ -11,6 +11,9 @@ urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
+    # Set default page to messaging for testing purposes  
+    url(r'^$', include('rapidsms.contrib.messaging.urls')),
+
     (r'^admin/', include(admin.site.urls)),
     
     # RapidSMS core URLs
