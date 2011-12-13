@@ -64,8 +64,8 @@ class App(AppBase):
         # Formulate response
 
         resp = ''
-        for item in stoptimes:
-            resp += str(item)+ '\n'
+        for stoptime in stoptimes:
+            resp += time.strftime('%H:%M:%S', stoptime)+ '\n'
 
         #resp = 'stop:' + stop
         if(bus):
