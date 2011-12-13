@@ -10,21 +10,23 @@ from rapidsms.apps.base import AppBase
 from hammersms.models import StopTime, Trip, Route, Stop
 
 class App(AppBase):
+    ''' Handles recieving an SMS from the client
 
-    # Handles recieving an SMS from the client
-    #
-    # Expected format is 'HSR stopnum busnum' or 'HSR stopnum'
-    # e.g. HSR 1234 52A or HSR 1234
-    #
-    # Parses input responds with an SMS that contains the times when
-    # the bus will be available.
-    # e.g.
-    # HSR Next bus 10 min, 2nd bus 15 min, 3rd bus 30 min
-    # or
-    # HSR Next Rte 1A 10 min, Rte 2 15 min, Rte 4 17 min.
-    # Use HSR 1234 1A for more King.  Use 1234 2 for more Barton
+    Expected format is 'HSR stopnum busnum' or 'HSR stopnum'
+    e.g. HSR 1234 52A or HSR 1234
+
+    Parses input responds with an SMS that contains the times when
+    the bus will be available.
+    e.g.
+    HSR Next bus 10 min, 2nd bus 15 min, 3rd bus 30 min
+    or
+    HSR Next Rte 1A 10 min, Rte 2 15 min, Rte 4 17 min.
+    Use HSR 1234 1A for more King.  Use 1234 2 for more Barton
+    '''
+
     def handle(self, message):
-        '''Receives incoming SMS message and parses it to formulate response.'''
+        '''Receives incoming SMS message and parses it to formulate response
+        '''
 
         HELP_MSG = 'Usage: \'HSR stopnumber (bus)\'\n Ex. \'HSR 3001\'\nor \'HSR 3001 5C\''
         USER_ID = 'HSR' # prepended to text message
@@ -51,6 +53,16 @@ class App(AppBase):
         # retrieve django filtered QuerySet objects
         stoptimes_obj = StopTime.objects.filter(stop__stop_id__contains=stop)
 
+        # If a bus is given find the route
+        route_obj = []
+        if bus:
+            route_obj = self.get_bus_route(bus)
+            if not route_obj:
+                resp = 'Invalid bus entry: ' + bus
+                message.respond(resp)
+                return
+
+
         print '\n' + str(stoptimes_obj[1]) + '\n'
 
         # convert query objects into time structures
@@ -68,11 +80,25 @@ class App(AppBase):
             resp += time.strftime('%H:%M:%S', stoptime)+ '\n'
 
         #resp = 'stop:' + stop
-        if(bus):
-            resp += ' bus:' + bus
+        if(route_obj):
+            resp += ' bus:' + route_obj.route_short_name
 
         #TODO: implement lookup of bus schedule
 
         #right now, it's outputting all data for a stopid. It should get the first 3 times for a given stop #
         message.respond(resp)
+
+
+    def get_bus_route(self, bus):
+        '''Query the database to ensure the bus exists. If so return a route
+        object associated with that bus. Otherwise return False.
+        '''
+        # obtain QuerySet from db
+        query_obj = Route.objects.filter(route_short_name=bus)
+        if query_obj:
+            # One query at most should be found (unique identifier)
+            route_obj = query_obj[0]
+            return route_obj
+        else:
+            return False
 
