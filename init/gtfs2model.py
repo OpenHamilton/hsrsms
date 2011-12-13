@@ -10,12 +10,6 @@ import os, re, csv
 import django
 import simplejson as json
 
-def fixhour(mo):
-    h = int(mo.group(0))
-    if(h >= 24):
-        return str(h - 24)
-    return str(h)
-
 # Files included in GTFS data
 FILES = ['agency', 'calendar', 'calendar_dates', 'fare_attributes', 'routes', 'shapes', 'stop_times', 'stops', 'trips', 'frequencies']
 DIR = 'tmp'
