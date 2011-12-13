@@ -24,7 +24,7 @@ class App(AppBase):
     # HSR Next Rte 1A 10 min, Rte 2 15 min, Rte 4 17 min.
     # Use HSR 1234 1A for more King.  Use 1234 2 for more Barton
     def handle(self, message):
-    '''Receives incoming SMS message and parses it to formulate response.'''
+        '''Receives incoming SMS message and parses it to formulate response.'''
 
         HELP_MSG = 'Usage: \'HSR stopnumber (bus)\'\n Ex. \'HSR 3001\'\nor \'HSR 3001 5C\''
         USER_ID = 'HSR' # prepended to text message
@@ -59,7 +59,6 @@ class App(AppBase):
             time_tmp = time.strptime(str(stoptime_obj), '%H:%M:%S')
             stoptimes.append(time_tmp)
 
-        sort_times(stoptimes)
         current_time = time.localtime()
 
         # Formulate response
@@ -77,15 +76,3 @@ class App(AppBase):
         #right now, it's outputting all data for a stopid. It should get the first 3 times for a given stop #
         message.respond(resp)
 
-    def sort_times(times):
-        '''Bubble sorts a list of time structures'''
-
-        for i in range(0, len(times) -1):
-            swap_test = False
-            for j in range(0, len(times) - i - 1):
-                if times[j] > times[i + 1]:
-                    times[j], times[j + 1] = times[j + 1], times[j]
-                swap_test = True
-            if swap_test == False:
-                break
-        return
