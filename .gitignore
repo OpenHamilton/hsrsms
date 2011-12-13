@@ -2,4 +2,6 @@
 *.sqlite3
 *.log*
 *.swp
+*.json
+*.txt
 
