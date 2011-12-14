@@ -17,6 +17,28 @@ class Route(models.Model):
     route_short_name = models.CharField(max_length=4, unique=True)
     route_id = models.CharField(max_length=16, unique=True)
 
+
+class Calendar(models.Model):
+    '''Models the data found in the calendar.txt GTFS data file. Monday
+    through Friday are bools that tell if the stop times for a particular
+    trip are for that day. Stop times generally differ for Sat, Sun and
+    Holidays.
+    '''
+
+    def __unicode__(self):
+        return str(self.service_id)
+
+    service_id = models.CharField(max_length=16, unique=True)
+    monday = models.BooleanField()
+    tuesday = models.BooleanField()
+    wednesday = models.BooleanField()
+    thursday = models.BooleanField()
+    friday = models.BooleanField()
+    saturday = models.BooleanField()
+    sunday = models.BooleanField()
+    # start_date = YYYYMMDD
+    # end_date = YYYYMMDD
+
 class Trip(models.Model):
     '''Trips occur on a selected Routes and occur during specific dates and
     times.
@@ -46,25 +68,4 @@ class StopTime(models.Model):
     arrival_time = models.TimeField()
     trip = models.ForeignKey(Trip, to_field='trip_id')
     stop = models.ForeignKey(Stop, to_field='stop_id')
-
-class Calendar(models.Model):
-    '''Models the data found in the calendar.txt GTFS data file. Monday
-    through Friday are bools that tell if the stop times for a particular
-    trip are for that day. Stop times generally differ for Sat, Sun and
-    Holidays.
-    '''
-
-    def __unicode__(self):
-        return str(self.service_id)
-
-    service_id = models.CharField(max_length=16, unique=True)
-    monday = models.BooleanField()
-    tuesday = models.BooleanField()
-    wednesday = models.BooleanField()
-    thursday = models.BooleanField()
-    friday = models.BooleanField()
-    saturday = models.BooleanField()
-    sunday = models.BooleanField()
-    # start_date = YYYYMMDD
-    # end_date = YYYYMMDD
 
