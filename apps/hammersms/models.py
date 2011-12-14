@@ -14,7 +14,7 @@ class Route(models.Model):
         return self.route_long_name
 
     route_long_name = models.CharField(max_length=40)
-    route_short_name = models.CharField(max_length=4, unique=True)
+    route_short_name = models.CharField(max_length=15)
     route_id = models.CharField(max_length=16, unique=True)
 
 
